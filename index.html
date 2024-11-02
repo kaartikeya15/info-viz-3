@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID-19 Global Data Visualization</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1>COVID-19 Global Data Visualization</h1>
+    
+    <div id="container">
+        <!-- Controls Section -->
+        <div id="controls">
+            <!-- Search Box for Country Selector -->
+            <label for="country-search">Search Country:</label>
+            <input type="text" id="country-search" placeholder="Type to search...">
+
+            <label>Select Countries:</label>
+            <div id="country-checkboxes"></div>
+            
+            <!-- Date Range Sliders -->
+            <div id="date-range-slider">
+                <label for="start-date-slider">Start Date:</label>
+                <input type="range" id="start-date-slider">
+                <span id="start-date-label"></span>
+                <div></div>
+                <label for="end-date-slider">End Date:</label>
+                <input type="range" id="end-date-slider">
+                <span id="end-date-label"></span>
+            </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div id="chart"></div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
