@@ -1,6 +1,6 @@
 /* Global Styling */
 body {
-    background-color: #f4f6f9; /* Light gray background */
+    background-color: #f4f6f9;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
@@ -16,7 +16,7 @@ h1 {
     margin-top: 20px;
 }
 
-/* Main Container */
+/* Container Flexbox Layout */
 #container {
     display: flex;
     align-items: flex-start;
@@ -25,17 +25,14 @@ h1 {
     max-width: 1400px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Controls Section */
 #controls {
     display: flex;
     flex-direction: column;
-    width: 260px;
-    background-color: #f8f9fa; /* Slightly lighter gray */
+    width: 250px;
+    background-color: #f8f9fa;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -48,11 +45,6 @@ label {
     display: block;
 }
 
-span {
-    color: #666;
-}
-
-/* Country Search Box */
 #country-search {
     width: 100%;
     padding: 8px;
@@ -132,17 +124,17 @@ span {
     cursor: pointer;
 }
 
-/* Chart Container */
-#chart {
+/* Chart Area */
+#chart-area {
     flex: 1;
-    max-width: 1200px;
-    height: 600px;
+    max-width: 1000px;
+}
+
+#chart-area svg {
     background-color: #ffffff;
     border: 1px solid #ced4da;
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    position: relative;
 }
 
 /* Tooltip Styling */
@@ -161,31 +153,28 @@ span {
     pointer-events: none; /* Prevents tooltips from interfering with hover actions */
 }
 
-/* Axis Titles */
-.axis-title {
-    font-size: 1em;
-    font-weight: bold;
-    fill: #333;
+/* Legend Area */
+#legend-area {
+    background-color: #ffffff;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    font-family: Arial, sans-serif;
 }
 
-/* Grid Lines */
-.grid line {
-    stroke: #e0e0e0;
-    stroke-opacity: 0.7;
-    shape-rendering: crispEdges;
+#legend-area div {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
 }
 
-.grid path {
-    stroke-width: 0;
+#legend-area svg {
+    margin-right: 8px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    #container {
-        flex-direction: column;
-        align-items: center;
-    }
-    #chart {
-        width: 100%;
-    }
+#legend-area span {
+    font-size: 12px;
+    color: #333;
 }
