@@ -1,19 +1,19 @@
-// Set dimensions and margins for the chart
+// Setting the dimensions and margins for the chart
 const margin = { top: 20, right: 80, bottom: 60, left: 80 };
 const width = 1200 - margin.left - margin.right;
 const height = 600 - margin.top - margin.bottom;
 
 let selectedCountries = []; // Global array to keep track of selected countries
 
-// Append SVG element
-const svg = d3.select("#chart")
+// Appending SVG element to #chart-area
+const svg = d3.select("#chart-area")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-// Tooltip setup
+// Tooltip setup for more clear visualization
 const tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("position", "absolute")
@@ -21,7 +21,7 @@ const tooltip = d3.select("body").append("div")
 
 let globalData, minTimestamp, maxTimestamp;
 
-// Populate the country checkboxes with search functionality
+// Populating the country checkboxes with search functionality
 function populateCountryCheckboxes(data) {
     const countries = Array.from(new Set(data.map(d => d.Country))).sort();
     const checkboxContainer = d3.select("#country-checkboxes");
@@ -31,26 +31,26 @@ function populateCountryCheckboxes(data) {
     function updateCheckboxes(filteredCountries) {
         checkboxContainer.selectAll("label").remove();
 
-        // Add checkboxes for each filtered country
+        // Inserting checkboxes for each filtered country
         filteredCountries.forEach(country => {
             const label = checkboxContainer.append("label")
                 .attr("class", "country-checkbox-label");
 
-            // Create checkbox and retain checked state from global `selectedCountries`
+            // Creating checkbox and retain checked state from global `selectedCountries`
             const checkbox = label.append("input")
                 .attr("type", "checkbox")
                 .attr("value", country)
                 .attr("class", "country-checkbox")
-                .property("checked", selectedCountries.includes(country)) // Retain global checked state
+                .property("checked", selectedCountries.includes(country)) // Retaining global checked state
                 .on("change", function() {
                     if (this.checked) {
-                        // Add country to `selectedCountries` if checked
+                        // Adding country to `selectedCountries` if checked
                         selectedCountries.push(country);
                     } else {
-                        // Remove country from `selectedCountries` if unchecked
+                        // Removing country from `selectedCountries` if unchecked
                         selectedCountries = selectedCountries.filter(c => c !== country);
                     }
-                    updateChart(); // Update chart based on global `selectedCountries`
+                    updateChart(); // Updating chart based on global `selectedCountries`
                 });
 
             label.append("span").text(country);
@@ -60,7 +60,7 @@ function populateCountryCheckboxes(data) {
     // Initial population of checkboxes with all countries
     updateCheckboxes(countries);
 
-    // Search functionality
+    // Adding Search functionality
     searchBox.on("input", function() {
         const searchText = this.value.toLowerCase();
         const filteredCountries = countries.filter(country =>
@@ -70,27 +70,27 @@ function populateCountryCheckboxes(data) {
     });
 }
 
-// Load and parse data, then initialize chart elements
+// Loading and parsing data, then initializing chart elements
 d3.csv("covid.csv").then(data => {
-    // Parse date and convert values to numbers
+    // Parsing date and convert values to numbers
     data.forEach(d => {
         d.Date_reported = d3.timeParse("%Y-%m-%d")(d.Date_reported);
         d.Cumulative_cases = +d.Cumulative_cases;
         d.Cumulative_deaths = +d.Cumulative_deaths;
     });
 
-    globalData = data; // Store data globally for use in updateChart
+    globalData = data; // Storing data globally for use in updateChart
 
-    // Populate country checkboxes with search functionality
+    // Populating country checkboxes with search functionality
     populateCountryCheckboxes(data);
 
-    // Determine date range for sliders
+    // Determining date range for sliders
     const minDate = d3.min(data, d => d.Date_reported);
     const maxDate = d3.max(data, d => d.Date_reported);
     minTimestamp = minDate.getTime();
     maxTimestamp = maxDate.getTime();
 
-    // Configure sliders
+    // Configuring sliders
     d3.select("#start-date-slider")
         .attr("min", minTimestamp)
         .attr("max", maxTimestamp)
@@ -103,11 +103,11 @@ d3.csv("covid.csv").then(data => {
         .attr("value", maxTimestamp)
         .on("input", updateChart);
 
-    // Set initial date labels
+    // Setting the initial date labels
     d3.select("#start-date-label").text(d3.timeFormat("%Y-%m-%d")(minDate));
     d3.select("#end-date-label").text(d3.timeFormat("%Y-%m-%d")(maxDate));
 
-    // Initial chart rendering
+    // Initializing chart rendering
     updateChart();
 });
 
@@ -195,13 +195,13 @@ function updateChart() {
         .style("font-size", "14px")
         .style("font-weight", "bold");
         
-        svg.append("text")
-            .attr("x", width / 2)
-            .attr("y", height + margin.bottom - 1) // Position below the chart
-            .attr("text-anchor", "middle")
-            .style("font-size", "18px")  // Larger font for title
-            .style("font-weight", "bold")
-            .text("COVID-19 Cumulative Cases and Deaths Over Time");
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom - 1) // Position below the chart
+        .attr("text-anchor", "middle")
+        .style("font-size", "18px")  // Larger font for title
+        .style("font-weight", "bold")
+        .text("COVID-19 Cumulative Cases and Deaths Over Time");
 
     // Draw lines for each selected country in `selectedCountries`
     selectedCountries.forEach((country) => {
@@ -256,5 +256,53 @@ function updateChart() {
                     tooltip.style("visibility", "hidden");
                 });
         });
+    });
+
+    // Clear old legend and create new legend
+    d3.select("#legend-area").selectAll("*").remove();
+    
+    const legendArea = d3.select("#legend-area");
+
+    // Legend Explanation for Solid and Dashed Lines
+    legendArea.append("div")
+        .style("font-size", "14px")
+        .style("font-weight", "bold")
+        .text("Legend:");
+
+    legendArea.append("div").style("margin-top", "10px")
+        .html(`<svg width="18" height="2"><line x1="0" y1="1" x2="18" y2="1" stroke="black" stroke-width="2" /></svg>`)
+        .style("display", "inline-block")
+        .style("vertical-align", "middle")
+        .style("margin-right", "5px")
+        .append("span")
+        .text("= Cumulative Cases");
+
+    legendArea.append("div")
+        .style("margin-top", "10px")
+        .html(`<svg width="18" height="2"><line x1="0" y1="1" x2="18" y2="1" stroke="black" stroke-width="2" stroke-dasharray="5,5" /></svg>`)
+        .style("display", "inline-block")
+        .style("vertical-align", "middle")
+        .style("margin-right", "5px")
+        .append("span")
+        .text("= Cumulative Deaths");
+
+    // Country-Specific Legend Items Positioned in Legend Area
+    selectedCountries.forEach((country, i) => {
+        const countryColor = color(country);
+
+        const legendItem = legendArea.append("div").style("margin-top", "10px");
+
+        legendItem.append("svg")
+            .attr("width", 18)
+            .attr("height", 18)
+            .append("rect")
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", countryColor);
+
+        legendItem.append("span")
+            .style("font-size", "12px")
+            .style("padding-left", "5px")
+            .text(country);
     });
 }
