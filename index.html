@@ -9,7 +9,7 @@
 <body>
     <h1>COVID-19 Global Data Visualization</h1>
     
-    <div id="container">
+    <div id="container" style="display: flex; gap: 20px;">
         <!-- Controls Section -->
         <div id="controls">
             <!-- Search Box for Country Selector -->
@@ -31,8 +31,14 @@
             </div>
         </div>
 
-        <!-- Chart Container -->
-        <div id="chart"></div>
+        <!-- Main Chart and Legend Section -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Chart Container -->
+            <div id="chart-area"></div>
+            
+            <!-- Legend Container -->
+            <div id="legend-area" style="padding-top: 10px;"></div>
+        </div>
     </div>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
